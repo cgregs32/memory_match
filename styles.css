@@ -1,0 +1,36 @@
+h1{
+  text-align: center;
+}
+
+.wrapper{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 85%;
+  grid-auto-rows: 200px;
+  grid-gap: 1em;
+  margin: 0 auto;
+}
+
+.wrapper > * {
+  border: 1px solid black;
+}
+
+body{
+  background-color: #EEE;
+}
+
+.card{
+  background-image: url(./images/background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.card{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden{
+  visibility: hidden;
+}
