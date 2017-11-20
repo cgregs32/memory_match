@@ -1,6 +1,7 @@
 $(document).ready( function(){
   clickCounter = 0;
   matchCounter = 0;
+  totalClicks = 0;
   startGame();
   reset();
 });
@@ -12,8 +13,14 @@ function reset(){
       $('.wrapper').append("<div id='" + i + "' class='card'></div>")
     }
     matchCounter = 0;
+    totalClicks = 0;
+    clickTotal();
     startGame();
   });
+}
+
+function clickTotal(){
+  $('#click-counter').html(totalClicks);
 }
 
 function startGame(){
@@ -33,7 +40,8 @@ function clickAction(){
   $('.card').on('click', function(){
     switch (clickCounter) {
       case 0:
-        clickCounter++
+        clickCounter++;
+        totalClicks++;
         clicked1 = this.id
         $('#' + clicked1).children().show()
         flipBackground(this.id)
@@ -45,6 +53,7 @@ function clickAction(){
 
         matchCheck(clicked1, clicked2)
         clickCounter++;
+        totalClicks++;
       case 2:
         clicked1 = null;
         clicked2 = null;
@@ -52,9 +61,12 @@ function clickAction(){
     }
     if (matchCounter === 8){
       winCondition();
-
     }
+    console.log(totalClicks)
+    clickTotal();
+
   });
+
 }
 
 function flipBackground(id){
