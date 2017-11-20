@@ -1,75 +1,124 @@
 $(document).ready( function(){
-  var match = [];
-  var selection = []
+  clickCounter = 0;
+  matchCounter = 0;
+  startGame();
+  reset();
+});
+
+function reset(){
+  $(document).on('click', '.button', function(){
+    $('.wrapper').html("")
+    for(var i = 1; i <= 16; i++){
+      $('.wrapper').append("<div id='" + i + "' class='card'></div>")
+    }
+    matchCounter = 0;
+    startGame();
+  });
+}
+
+function startGame(){
+
   displayShuffle();
-  $("img").hide();
-  cardSelection(match, selection);
+  setTimeout(function(){
+    $('.card').children().hide()
+  }, 2000);
+  $('.card').addClass('background')
+  clickAction();
+}
 
-  function cardSelection(match, selection){
-    $(".card").on("click", function(){
-      remove_click(match)
+function clickAction(){
+  var clicked1;
+  var clicked2;
 
-      console.log('click')
-      if (selection.length === 2) {
-        $(".card").off("click");
-        id = $(this).attr("id");
+  $('.card').on('click', function(){
+    switch (clickCounter) {
+      case 0:
+        clickCounter++
+        clicked1 = this.id
+        $('#' + clicked1).children().show()
+        flipBackground(this.id)
+        break;
+      case 1:
+        clicked2 = this.id
+        $('#' + clicked2).children().show()
+        flipBackground(this.id)
 
-        cardComparison(match, selection)
-      } else {
-        $(this).children().show();
-        id = $(this).attr("id");
-        selection.push(id);
-      }
+        matchCheck(clicked1, clicked2)
+        clickCounter++;
+      case 2:
+        clicked1 = null;
+        clicked2 = null;
+        clickCounter = 0;
+    }
+    if (matchCounter === 8){
+      winCondition();
+
+    }
+  });
+}
+
+function flipBackground(id){
+  $('#'+id).removeClass('background')
+  $('#'+id).addClass('background-flip')
+}
+function flipBack(id){
+  $('#'+id).removeClass('background-flip')
+  $('#'+id).addClass('background')
+}
+
+function winCondition(){
+  $('.card').addClass('visibility');
+  var winDiv = "<div class='you-win'>Congrats, You Win!</div>"
+  var button = "<button class='button'>Play Again?</button>"
+  $('.wrapper').html(winDiv)
+  $('.wrapper').append(button)
+}
+
+function matchCheck(click1, click2){
+  var checkSource1 = $('#'+click1).children().attr('src')
+  var checkSource2 = $('#'+click2).children().attr('src')
+  var id1 = $('#'+click1);
+  var id2 = $('#'+click2);
+  if (id1.attr('id') === id2.attr('id')){
+    flippidy(click1, click2)
+
+  }else if(checkSource1 === checkSource2){
+    setTimeout(function(){
+      id1.addClass("hidden")
+      id2.addClass("hidden")
+    }, 1000);
+    matchCounter++;
+  }else{
+  setTimeout(function(){
+    flippidy(click1, click2)
+  }, 1000);
+  }
+}
+
+function flippidy(id1, id2){
+  $('#' + id1).children().hide()
+  $('#' + id2).children().hide()
+  flipBack(id1)
+  flipBack(id2)
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
+function displayShuffle(){
+  var picIDs = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8];
+  var shuffledPics = shuffle(picIDs);
+  for (var i = 0; i < shuffledPics.length; i++){
+    $(".card").each(function(i, card) {
+      $(card).html("<img src=./images/" + picIDs[i] + ".png>");
     });
   }
-
-
-  function cardComparison(match, selection){
-    var cardAImg = ($("#" + selection[0]).children().attr("src"));
-    var cardBImg = ($("#" + selection[1]).children().attr("src"));
-    var cardADiv = ($("#" + selection[0]).children());
-    var cardBDiv = ($("#" + selection[1]).children());
-    if (cardAImg === cardBImg) {
-
-      $("#" + selection[0]).off('click')
-      $("#" + selection[1]).off('click')
-      $("#" + selection[0]).show();
-      $("#" + selection[1]).show();
-      match.push(selection[0]);
-      match.push(selection[0]);
-      console.log(match)
-      if (match.length === 16){
-        console.log("YOU WIN!")
-      } else {
-        selection = [];
-        cardSelection(match, selection);
-      }
-    }
-    else {
-      $(cardADiv).hide();
-      $(cardBDiv).hide();
-      selection = [];
-      cardSelection(match, selection);
-    }
-  }
-  function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
-  }
-  function displayShuffle(){
-    var picIDs = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8];
-    var shuffledPics = shuffle(picIDs);
-    for (var i = 0; i < shuffledPics.length; i++){
-      $(".card").each(function(i, card) {
-        $(card).html("<img src=./images/" + shuffledPics[i] + ".png>");
-      });
-    }
-  }
-});
+}

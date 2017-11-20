@@ -1,25 +1,39 @@
 h1{
   text-align: center;
+  color: #6DC0D5;
+  border: none;
+  text-shadow: 1px 3px 4px black;
+  font-size: 50px;
 }
 
 .wrapper{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   max-width: 85%;
-  grid-auto-rows: 200px;
+
+  grid-auto-rows: 150px;
   grid-gap: 1em;
   margin: 0 auto;
+  max-height:600px;
 }
 
 .wrapper > * {
   border: 1px solid black;
+  border-radius: 15px;
+  box-shadow: 2px 1px 5px;
 }
 
 body{
-  background-color: #EEE;
+  background-color: #B2CEDE;
 }
 
-.card{
+
+
+.background-flip{
+  background: #119DA4;
+}
+
+.background{
   background-image: url(./images/background.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -33,4 +47,37 @@ body{
 
 .hidden{
   visibility: hidden;
+}
+.visibility{
+  display: none;
+}
+.you-win{
+  display: grid;
+  grid-column: 1/5;
+  grid-row: 1;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 80px;
+  color: #AD7A99;
+  border: 2px dashed #8CDFD6;
+  text-shadow: 1px 3px 4px black;
+}
+
+.button {
+    display: grid;
+    justify-self: center;
+    align-self: start;
+    grid-column: 2/4;
+    grid-row: 2;
+    height: 60px;
+    width: 100px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
 }
